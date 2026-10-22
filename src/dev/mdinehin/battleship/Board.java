@@ -7,9 +7,9 @@ public class Board
 
     public Board()
     {
-        for (int y = 0; y < BOARD_SIZE; y++) {
-            for (int x = 0; x < BOARD_SIZE; x++) {
-                this.cells[y][x] = new Cell(x, y, CellState.EMPTY);
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                this.cells[row][col] = new Cell(col, row, CellState.EMPTY);
             }
         }
     }
@@ -18,8 +18,8 @@ public class Board
     {
         printColumnHeaders();
 
-        for (int y = 0; y < BOARD_SIZE; y++) {
-            int rowLabel = y + 1;
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            int rowLabel = row + 1;
 
             if (rowLabel < BOARD_SIZE) {
                 System.out.print(' ');
@@ -27,8 +27,8 @@ public class Board
 
             System.out.print(rowLabel);
 
-            for (int x = 0; x < BOARD_SIZE; x++) {
-                char cellValue = this.cells[y][x].stateToChar();
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                char cellValue = this.cells[row][col].stateToChar();
                 System.out.print(cellValue);
             }
 
@@ -38,9 +38,9 @@ public class Board
 
     public void populate()
     {
-        for (int y = 0; y < BOARD_SIZE; y++) {
-            for (int x = 0; x < BOARD_SIZE; x++) {
-                this.cells[y][x].setState(getRandomCellState());
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                this.cells[row][col].setState(getRandomCellState());
             }
         }
     }

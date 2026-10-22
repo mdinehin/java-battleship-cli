@@ -2,15 +2,15 @@ package dev.mdinehin.battleship;
 
 public class Cell
 {
-    private final int x;
-    private final int y;
+    private final int col;
+    private final int row;
     private CellState cellState;
     private Ship ship;
 
-    public Cell(int x, int y, CellState cellState)
+    public Cell(int col, int row, CellState cellState)
     {
-        this.x = x;
-        this.y = y;
+        this.col = col;
+        this.row = row;
         this.cellState = cellState;
     }
 
