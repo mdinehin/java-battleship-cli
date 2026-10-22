@@ -4,8 +4,20 @@ public class Main
 {
     public static void main(String[] args)
     {
+        char[][] board = new char[10][10];
+        populateBoard(board);
+
         printColumnHeader();
-        printBoard();
+        printBoard(board);
+    }
+
+    private static void populateBoard(char[][] board)
+    {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                board[i][j] = getRandomShip();
+            }
+        }
     }
 
     static void printColumnHeader()
@@ -19,17 +31,19 @@ public class Main
         System.out.print('\n');
     }
 
-    static void printBoard()
+    static void printBoard(char [][] board)
     {
-        for (int i = 1; i <= 10; i++) {
-            if (i < 10) {
+        for (int i = 0; i < 10; i++) {
+            int rowLabel = i + 1;
+
+            if (rowLabel < 10) {
                 System.out.print(' ');
             }
 
-            System.out.print(i);
+            System.out.print(rowLabel);
 
             for (int j = 0; j < 10; j++) {
-                char shipValue = getRandomShip();
+                char shipValue = board[i][j];
                 System.out.print(shipValue);
             }
 
