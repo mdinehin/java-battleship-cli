@@ -45,6 +45,15 @@ public class Board
         }
     }
 
+    public boolean addShip(int row, int col, Submarine submarine)
+    {
+        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+            return false;
+        }
+
+        return true;
+    }
+
     private static CellState getRandomCellState()
     {
         double random = Math.random();
