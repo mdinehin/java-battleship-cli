@@ -22,4 +22,9 @@ public class Cell
             case SUNK -> 'U';
         };
     }
+
+    public void setState(CellState cellState)
+    {
+        this.cellState = cellState;
+    }
 }
