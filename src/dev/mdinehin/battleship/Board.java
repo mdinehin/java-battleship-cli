@@ -3,13 +3,20 @@ package dev.mdinehin.battleship;
 public class Board
 {
     public static final int BOARD_SIZE = 10;
+
+    public static final int SHIP_TYPE_COUNT = 4;
+
     private Cell[][] cells = new Cell[BOARD_SIZE][BOARD_SIZE];
+
+    private int shipCount;
+
+    private int shipCountsByDeck[] = new int[SHIP_TYPE_COUNT];
 
     public Board()
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                this.cells[row][col] = new Cell(col, row, CellState.EMPTY);
+                cells[row][col] = new Cell(col, row, CellState.EMPTY);
             }
         }
     }
@@ -28,7 +35,7 @@ public class Board
             System.out.print(rowLabel);
 
             for (int col = 0; col < BOARD_SIZE; col++) {
-                char cellValue = this.cells[row][col].stateToChar();
+                char cellValue = cells[row][col].stateToChar();
                 System.out.print(cellValue);
             }
 
@@ -40,18 +47,31 @@ public class Board
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                this.cells[row][col].setState(getRandomCellState());
+                cells[row][col].setState(getRandomCellState());
             }
         }
     }
 
-    public boolean addShip(int row, int col, Submarine submarine)
+    public void placeShip(int row, int col, Ship ship) throws IllegalPlacementException
     {
-        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
-            return false;
+        if (shipCountsByDeck[ship.getDeckCount() - 1] == getMaxShipTypeCount(ship.getDeckCount())) {
+            String errorMessage = String.format("The maximum number of ships of this type has been reached [Deck count: %d]", ship.getDeckCount());
+            throw new IllegalPlacementException(errorMessage);
         }
 
-        return true;
+        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+            throw new IllegalPlacementException("Cannot place ship outside the board boundaries");
+        }
+
+        ship.assignCell(cells[row][col], 0);
+
+        shipCount++;
+        shipCountsByDeck[ship.getDeckCount() - 1]++;
+    }
+
+    private int getMaxShipTypeCount(int deckCount)
+    {
+        return SHIP_TYPE_COUNT - deckCount + 1;
     }
 
     private static CellState getRandomCellState()
@@ -78,5 +98,15 @@ public class Board
         }
 
         System.out.print('\n');
+    }
+
+    public int getShipCount()
+    {
+        return shipCount;
+    }
+
+    public Cell getCell(int row, int col)
+    {
+        return cells[row][col];
     }
 }

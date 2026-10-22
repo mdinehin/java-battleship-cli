@@ -3,8 +3,11 @@ package dev.mdinehin.battleship;
 public class Cell
 {
     private final int col;
+
     private final int row;
+
     private CellState cellState;
+
     private Ship ship;
 
     public Cell(int col, int row, CellState cellState)
@@ -21,7 +24,7 @@ public class Cell
 
     public char stateToChar()
     {
-        return switch (this.cellState) {
+        return switch (cellState) {
             case EMPTY -> ' ';
             case SHIP -> 'S';
             case HIT -> 'O';
@@ -33,5 +36,10 @@ public class Cell
     public void setState(CellState cellState)
     {
         this.cellState = cellState;
+    }
+
+    public CellState getState()
+    {
+        return cellState;
     }
 }

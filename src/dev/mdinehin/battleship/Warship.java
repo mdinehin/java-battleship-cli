@@ -3,12 +3,14 @@ package dev.mdinehin.battleship;
 public abstract class Warship implements Ship
 {
     private Orientation orientation;
+
     private int hitCount;
+
     private Cell[] occupiedCells;
 
     public Warship()
     {
-        this.occupiedCells = new Cell[this.getDeckCount()];
+        occupiedCells = new Cell[getDeckCount()];
     }
 
     @Override
@@ -16,23 +18,23 @@ public abstract class Warship implements Ship
     {
         cell.setShip(this);
         cell.setState(CellState.SHIP);
-        this.occupiedCells[deckNumber] = cell;
+        occupiedCells[deckNumber] = cell;
     }
 
     @Override
     public boolean isSunk()
     {
-        return this.hitCount == this.getDeckCount();
+        return hitCount == getDeckCount();
     }
 
     @Override
     public void registerHit()
     {
-        this.hitCount++;
+        hitCount++;
 
-        if (this.isSunk()) {
-            for (int i = 0; i < this.occupiedCells.length; i++) {
-                this.occupiedCells[i].setState(CellState.SUNK);
+        if (isSunk()) {
+            for (int i = 0; i < occupiedCells.length; i++) {
+                occupiedCells[i].setState(CellState.SUNK);
             }
         }
     }
