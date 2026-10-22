@@ -20,4 +20,13 @@ public interface Ship
      * @return true if all the ship's decks have been hit, false otherwise
      */
     boolean isSunk();
+
+    /**
+     * Assigns a specific board cell to a designated deck segment of this ship.
+     *
+     * @param cell       the board cell where this deck segment is being positioned
+     * @param deckNumber the index of the ship's deck (0-indexed, ranging from 0 to the total deck count minus one)
+     * @throws IllegalArgumentException if the provided cell is null or the deckNumber is out of valid bounds
+     */
+    void assignCell(Cell cell, int deckNumber);
 }

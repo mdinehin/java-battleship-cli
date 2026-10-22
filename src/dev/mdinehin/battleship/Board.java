@@ -9,7 +9,7 @@ public class Board
     {
         for (int y = 0; y < BOARD_SIZE; y++) {
             for (int x = 0; x < BOARD_SIZE; x++) {
-                cells[y][x] = new Cell(x, y, CellState.EMPTY);
+                this.cells[y][x] = new Cell(x, y, CellState.EMPTY);
             }
         }
     }
@@ -28,7 +28,7 @@ public class Board
             System.out.print(rowLabel);
 
             for (int x = 0; x < BOARD_SIZE; x++) {
-                char cellValue = cells[y][x].stateToChar();
+                char cellValue = this.cells[y][x].stateToChar();
                 System.out.print(cellValue);
             }
 
@@ -40,7 +40,7 @@ public class Board
     {
         for (int y = 0; y < BOARD_SIZE; y++) {
             for (int x = 0; x < BOARD_SIZE; x++) {
-                cells[y][x].setState(getRandomCellState());
+                this.cells[y][x].setState(getRandomCellState());
             }
         }
     }
