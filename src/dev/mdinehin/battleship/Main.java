@@ -2,20 +2,25 @@ package dev.mdinehin.battleship;
 
 public class Main
 {
+    enum CellState
+    {
+        EMPTY, HIT, MISS, SUNK
+    }
+
     public static void main(String[] args)
     {
-        char[][] board = new char[10][10];
+        CellState[][] board = new CellState[10][10];
         populateBoard(board);
 
         printColumnHeader();
         printBoard(board);
     }
 
-    private static void populateBoard(char[][] board)
+    private static void populateBoard(CellState[][] board)
     {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                board[i][j] = getRandomShip();
+                board[i][j] = getRandomCellState();
             }
         }
     }
@@ -31,7 +36,7 @@ public class Main
         System.out.print('\n');
     }
 
-    static void printBoard(char [][] board)
+    static void printBoard(CellState[][] board)
     {
         for (int i = 0; i < 10; i++) {
             int rowLabel = i + 1;
@@ -43,7 +48,7 @@ public class Main
             System.out.print(rowLabel);
 
             for (int j = 0; j < 10; j++) {
-                char shipValue = board[i][j];
+                char shipValue = cellStateToChar(board[i][j]);
                 System.out.print(shipValue);
             }
 
@@ -51,12 +56,28 @@ public class Main
         }
     }
 
-    private static char getRandomShip()
+    private static char cellStateToChar(CellState cellState)
     {
-        if (Math.random() < 0.2) {
-            return 'O';
+        return switch (cellState) {
+            case EMPTY -> ' ';
+            case HIT -> 'O';
+            case MISS -> 'X';
+            case SUNK -> 'U';
+        };
+    }
+
+    private static CellState getRandomCellState()
+    {
+        double random = Math.random();
+
+        if (random < 0.2) {
+            return CellState.HIT;
         }
 
-        return ' ';
+        if (random > 0.8) {
+            return CellState.EMPTY;
+        }
+
+        return CellState.MISS;
     }
 }
