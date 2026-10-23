@@ -8,8 +8,9 @@ public abstract class Warship implements Ship
 
     private Cell[] occupiedCells;
 
-    public Warship()
+    public Warship(Orientation orientation)
     {
+        this.orientation = orientation;
         occupiedCells = new Cell[getDeckCount()];
     }
 
@@ -38,10 +39,25 @@ public abstract class Warship implements Ship
             }
         }
     }
+
+    public Orientation getOrientation()
+    {
+        return orientation;
+    }
 }
 
 class Submarine extends Warship
 {
+    public Submarine(Orientation orientation)
+    {
+        super(orientation);
+    }
+
+    public Submarine()
+    {
+        this(Orientation.HORIZONTAL);
+    }
+
     @Override
     public int getDeckCount()
     {
@@ -51,6 +67,11 @@ class Submarine extends Warship
 
 class Destroyer extends Warship
 {
+    public Destroyer(Orientation orientation)
+    {
+        super(orientation);
+    }
+
     @Override
     public int getDeckCount()
     {
@@ -60,6 +81,11 @@ class Destroyer extends Warship
 
 class Cruiser extends Warship
 {
+    public Cruiser(Orientation orientation)
+    {
+        super(orientation);
+    }
+
     @Override
     public int getDeckCount()
     {
@@ -69,6 +95,11 @@ class Cruiser extends Warship
 
 class Battleship extends Warship
 {
+    public Battleship(Orientation orientation)
+    {
+        super(orientation);
+    }
+
     @Override
     public int getDeckCount()
     {

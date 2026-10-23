@@ -29,4 +29,11 @@ public interface Ship
      * @throws IllegalArgumentException if the provided cell is null or the deckNumber is out of valid bounds
      */
     void assignCell(Cell cell, int deckNumber);
+
+    /**
+     * Returns the current orientation of the ship on the board.
+     *
+     * @return the ship's orientation (e.g., horizontal or vertical)
+     */
+    Orientation getOrientation();
 }

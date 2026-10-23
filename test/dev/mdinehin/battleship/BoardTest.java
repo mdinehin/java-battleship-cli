@@ -25,6 +25,15 @@ class BoardTest
     }
 
     @Test
+    void shouldSuccessfullyPlaceDestroyerOnCells() throws Exception
+    {
+        board.placeShip(0, 0, new Destroyer(Orientation.HORIZONTAL));
+
+        Cell cell = board.getCell(0, 1);
+        assertEquals(CellState.SHIP, cell.getState());
+    }
+
+    @Test
     void shouldThrowExceptionWhenPlacingFiveSubmarines() throws Exception
     {
         board.placeShip(1, 1, new Submarine());
@@ -42,10 +51,10 @@ class BoardTest
     @Test
     void shouldThrowExceptionWhenPlacingTwoBattleships() throws Exception
     {
-        board.placeShip(0, 0, new Battleship());
+        board.placeShip(0, 0, new Battleship(Orientation.HORIZONTAL));
 
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(4, 4, new Battleship());
+            board.placeShip(5, 5, new Battleship(Orientation.HORIZONTAL));
         });
 
         assertEquals("The maximum number of ships of this type has been reached [Deck count: 4]", exception.getMessage());

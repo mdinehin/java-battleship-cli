@@ -6,7 +6,7 @@ public class Board
 
     public static final int SHIP_TYPE_COUNT = 4;
 
-    private Cell[][] cells = new Cell[BOARD_SIZE][BOARD_SIZE];
+    private Cell[][] boardGrid = new Cell[BOARD_SIZE][BOARD_SIZE];
 
     private int shipCount;
 
@@ -16,7 +16,7 @@ public class Board
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                cells[row][col] = new Cell(col, row, CellState.EMPTY);
+                boardGrid[row][col] = new Cell(col, row, CellState.EMPTY);
             }
         }
     }
@@ -35,7 +35,7 @@ public class Board
             System.out.print(rowLabel);
 
             for (int col = 0; col < BOARD_SIZE; col++) {
-                char cellValue = cells[row][col].stateToChar();
+                char cellValue = boardGrid[row][col].stateToChar();
                 System.out.print(cellValue);
             }
 
@@ -47,15 +47,17 @@ public class Board
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                cells[row][col].setState(getRandomCellState());
+                boardGrid[row][col].setState(getRandomCellState());
             }
         }
     }
 
     public void placeShip(int row, int col, Ship ship) throws IllegalPlacementException
     {
-        if (shipCountsByDeck[ship.getDeckCount() - 1] == getMaxShipTypeCount(ship.getDeckCount())) {
-            String errorMessage = String.format("The maximum number of ships of this type has been reached [Deck count: %d]", ship.getDeckCount());
+        int count = ship.getDeckCount();
+
+        if (shipCountsByDeck[count - 1] == getMaxShipTypeCount(count)) {
+            String errorMessage = String.format("The maximum number of ships of this type has been reached [Deck count: %d]", count);
             throw new IllegalPlacementException(errorMessage);
         }
 
@@ -63,10 +65,24 @@ public class Board
             throw new IllegalPlacementException("Cannot place ship outside the board boundaries");
         }
 
-        ship.assignCell(cells[row][col], 0);
+        Cell[] shipCells = new Cell[count];
+
+        int rowToSet = row, colToSet = col;
+
+        for (int i = 0; i < count; i++) {
+            if (ship.getOrientation() == Orientation.HORIZONTAL) {
+                colToSet = col + i;
+            } else {
+                rowToSet = row + i;
+            }
+
+            shipCells[i] = boardGrid[rowToSet][colToSet];
+
+            ship.assignCell(shipCells[i], i);
+        }
 
         shipCount++;
-        shipCountsByDeck[ship.getDeckCount() - 1]++;
+        shipCountsByDeck[count - 1]++;
     }
 
     private int getMaxShipTypeCount(int deckCount)
@@ -107,6 +123,6 @@ public class Board
 
     public Cell getCell(int row, int col)
     {
-        return cells[row][col];
+        return boardGrid[row][col];
     }
 }
