@@ -52,4 +52,9 @@ public class Cell
     {
         return col;
     }
+
+    public Ship getShip()
+    {
+        return ship;
+    }
 }

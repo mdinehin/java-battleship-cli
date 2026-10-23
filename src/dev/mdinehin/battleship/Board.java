@@ -158,4 +158,28 @@ public class Board
     {
         return row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE;
     }
+
+    public void fireAt(int row, int col) throws Exception
+    {
+        Cell cell = getCell(row, col);
+
+        if (
+            cell.getState() == CellState.MISS
+            || cell.getState() == CellState.HIT
+            || cell.getState() == CellState.SUNK
+        ) {
+            throw new IllegalMoveException("Cell has already been fired upon");
+        }
+
+        if (cell.getState() == CellState.EMPTY) {
+            cell.setState(CellState.MISS);
+        } else if (cell.getState() == CellState.SHIP) {
+            cell.setState(CellState.HIT);
+            cell.getShip().registerHit();
+
+            if (cell.getShip().isSunk()) {
+                shipCount--;
+            }
+        }
+    }
 }

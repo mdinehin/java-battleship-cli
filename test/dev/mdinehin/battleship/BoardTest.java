@@ -107,4 +107,58 @@ class BoardTest
             "Ship placement overlaps existing ships or violates the no-touching rule", exception.getMessage()
         );
     }
+
+    @Test
+    void shouldMarkCellAsMissWhenFiringAtEmptyCell() throws Exception
+    {
+        board.fireAt(0, 0);
+
+        assertEquals(CellState.MISS, board.getCell(0, 0).getState());
+    }
+
+    @Test
+    void shouldMarkCellAsHitWhenFiringAtOccupiedCell() throws Exception
+    {
+        board.placeShip(new Destroyer(Orientation.HORIZONTAL), 0, 0);
+
+        board.fireAt(0, 0);
+
+        assertEquals(CellState.HIT, board.getCell(0, 0).getState());
+    }
+
+    @Test
+    void shouldMarkShipCellsAsSunkWhenLastDeckIsHit() throws Exception
+    {
+        board.placeShip(new Destroyer(Orientation.HORIZONTAL), 0, 0);
+
+        board.fireAt(0, 0);
+        board.fireAt(0, 1);
+
+        assertEquals(CellState.SUNK, board.getCell(0, 0).getState());
+        assertEquals(CellState.SUNK, board.getCell(0, 1).getState());
+    }
+
+    @Test
+    void shouldDecreaseGlobalShipCountWhenShipIsSunk() throws Exception
+    {
+        board.placeShip(new Submarine(), 0, 0);
+
+        assertEquals(1, board.getShipCount());
+
+        board.fireAt(0, 0);
+
+        assertEquals(0, board.getShipCount());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFiringAtAlreadyShotCell() throws Exception
+    {
+        board.fireAt(0, 0);
+
+        IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> {
+            board.fireAt(0, 0);
+        });
+
+        assertEquals("Cell has already been fired upon", exception.getMessage());
+    }
 }

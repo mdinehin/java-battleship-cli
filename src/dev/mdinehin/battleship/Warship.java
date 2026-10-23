@@ -33,10 +33,12 @@ public abstract class Warship implements Ship
     {
         hitCount++;
 
-        if (isSunk()) {
-            for (int i = 0; i < occupiedCells.length; i++) {
-                occupiedCells[i].setState(CellState.SUNK);
-            }
+        if (!isSunk()) {
+            return;
+        }
+
+        for (int i = 0; i < occupiedCells.length; i++) {
+            occupiedCells[i].setState(CellState.SUNK);
         }
     }
 
