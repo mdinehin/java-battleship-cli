@@ -52,7 +52,7 @@ public class Board
         }
     }
 
-    public void placeShip(int row, int col, Ship ship) throws IllegalPlacementException
+    public void placeShip(Ship ship, int row, int col) throws IllegalPlacementException
     {
         int count = ship.getDeckCount();
 

@@ -18,7 +18,7 @@ class BoardTest
     @Test
     void shouldUpdateCellStateToShipWhenShipPlaced() throws Exception
     {
-        board.placeShip(0, 0, new Submarine());
+        board.placeShip(new Submarine(), 0, 0);
 
         Cell cell = board.getCell(0, 0);
         assertEquals(CellState.SHIP, cell.getState());
@@ -27,13 +27,13 @@ class BoardTest
     @Test
     void shouldThrowExceptionWhenPlacingFiveSubmarines() throws Exception
     {
-        board.placeShip(0, 0, new Submarine());
-        board.placeShip(2, 0, new Submarine());
-        board.placeShip(4, 0, new Submarine());
-        board.placeShip(6, 0, new Submarine());
+        board.placeShip(new Submarine(), 0, 0);
+        board.placeShip(new Submarine(), 2, 0);
+        board.placeShip(new Submarine(), 4, 0);
+        board.placeShip(new Submarine(), 6, 0);
 
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(8, 0, new Submarine());
+            board.placeShip(new Submarine(), 8, 0);
         });
 
         assertEquals(
@@ -44,10 +44,10 @@ class BoardTest
     @Test
     void shouldThrowExceptionWhenPlacingTwoBattleships() throws Exception
     {
-        board.placeShip(0, 0, new Battleship(Orientation.HORIZONTAL));
+        board.placeShip(new Battleship(Orientation.HORIZONTAL), 0, 0);
 
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(2, 0, new Battleship(Orientation.HORIZONTAL));
+            board.placeShip(new Battleship(Orientation.HORIZONTAL), 2, 0);
         });
 
         assertEquals(
@@ -59,7 +59,7 @@ class BoardTest
     void shouldThrowExceptionWhenPlacingOutsideBoardRow()
     {
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(-1, 0, new Submarine());
+            board.placeShip(new Submarine(), -1, 0);
         });
 
         assertEquals("Cannot place ship outside the board boundaries", exception.getMessage());
@@ -69,7 +69,7 @@ class BoardTest
     void shouldThrowExceptionWhenPlacingOutsideBoardColumn()
     {
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(0, 10, new Submarine());
+            board.placeShip(new Submarine(), 0, 10);
         });
 
         assertEquals("Cannot place ship outside the board boundaries", exception.getMessage());
@@ -79,7 +79,7 @@ class BoardTest
     void shouldThrowExceptionWhenShipExtendsOutsideBoardHorizontally()
     {
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(0, 9, new Destroyer(Orientation.HORIZONTAL));
+            board.placeShip(new Destroyer(Orientation.HORIZONTAL), 0, 9);
         });
 
         assertEquals("Cannot place ship outside the board boundaries", exception.getMessage());
@@ -89,7 +89,7 @@ class BoardTest
     void shouldThrowExceptionWhenShipExtendsOutsideBoardVertically()
     {
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(7, 0, new Battleship(Orientation.VERTICAL));
+            board.placeShip(new Battleship(Orientation.VERTICAL), 7, 0);
         });
 
         assertEquals("Cannot place ship outside the board boundaries", exception.getMessage());
@@ -99,8 +99,8 @@ class BoardTest
     void shouldThrowExceptionWhenShipOverlapsExistingShipsOrShipIsAdjacentToAnotherShip()
     {
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(0, 0, new Submarine());
-            board.placeShip(1, 1, new Submarine());
+            board.placeShip(new Submarine(), 0, 0);
+            board.placeShip(new Submarine(), 1, 1);
         });
 
         assertEquals(
