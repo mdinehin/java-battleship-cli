@@ -27,28 +27,32 @@ class BoardTest
     @Test
     void shouldThrowExceptionWhenPlacingFiveSubmarines() throws Exception
     {
-        board.placeShip(1, 1, new Submarine());
-        board.placeShip(2, 2, new Submarine());
-        board.placeShip(3, 3, new Submarine());
-        board.placeShip(4, 4, new Submarine());
+        board.placeShip(0, 0, new Submarine());
+        board.placeShip(2, 0, new Submarine());
+        board.placeShip(4, 0, new Submarine());
+        board.placeShip(6, 0, new Submarine());
 
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(5, 5, new Submarine());
+            board.placeShip(8, 0, new Submarine());
         });
 
-        assertEquals("The maximum number of ships of this type has been reached [Deck count: 1]", exception.getMessage());
+        assertEquals(
+            "The maximum number of ships of this type has been reached [Deck count: 1]", exception.getMessage()
+        );
     }
 
     @Test
     void shouldThrowExceptionWhenPlacingTwoBattleships() throws Exception
     {
-        board.placeShip(1, 1, new Battleship(Orientation.HORIZONTAL));
+        board.placeShip(0, 0, new Battleship(Orientation.HORIZONTAL));
 
         IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
-            board.placeShip(2, 2, new Battleship(Orientation.HORIZONTAL));
+            board.placeShip(2, 0, new Battleship(Orientation.HORIZONTAL));
         });
 
-        assertEquals("The maximum number of ships of this type has been reached [Deck count: 4]", exception.getMessage());
+        assertEquals(
+            "The maximum number of ships of this type has been reached [Deck count: 4]", exception.getMessage()
+        );
     }
 
     @Test
@@ -89,5 +93,18 @@ class BoardTest
         });
 
         assertEquals("Cannot place ship outside the board boundaries", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenShipOverlapsExistingShipsOrShipIsAdjacentToAnotherShip()
+    {
+        IllegalPlacementException exception = assertThrows(IllegalPlacementException.class, () -> {
+            board.placeShip(0, 0, new Submarine());
+            board.placeShip(1, 1, new Submarine());
+        });
+
+        assertEquals(
+            "Ship placement overlaps existing ships or violates the no-touching rule", exception.getMessage()
+        );
     }
 }

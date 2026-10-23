@@ -2,18 +2,18 @@ package dev.mdinehin.battleship;
 
 public class Cell
 {
-    private final int col;
-
     private final int row;
+
+    private final int col;
 
     private CellState cellState;
 
     private Ship ship;
 
-    public Cell(int col, int row, CellState cellState)
+    public Cell(int row, int col, CellState cellState)
     {
-        this.col = col;
         this.row = row;
+        this.col = col;
         this.cellState = cellState;
     }
 
@@ -41,5 +41,15 @@ public class Cell
     public CellState getState()
     {
         return cellState;
+    }
+
+    public int getRow()
+    {
+        return row;
+    }
+
+    public int getCol()
+    {
+        return col;
     }
 }

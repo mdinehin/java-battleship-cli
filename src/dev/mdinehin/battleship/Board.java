@@ -16,7 +16,7 @@ public class Board
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                boardGrid[row][col] = new Cell(col, row, CellState.EMPTY);
+                boardGrid[row][col] = new Cell(row, col, CellState.EMPTY);
             }
         }
     }
@@ -57,7 +57,9 @@ public class Board
         int count = ship.getDeckCount();
 
         if (shipCountsByDeck[count - 1] == getMaxShipTypeCount(count)) {
-            String errorMessage = String.format("The maximum number of ships of this type has been reached [Deck count: %d]", count);
+            String errorMessage = String.format(
+                "The maximum number of ships of this type has been reached [Deck count: %d]", count
+            );
             throw new IllegalPlacementException(errorMessage);
         }
 
@@ -66,17 +68,23 @@ public class Board
         int rowToSet = row, colToSet = col;
 
         for (int i = 0; i < count; i++) {
-            if (ship.getOrientation() == Orientation.HORIZONTAL) {
-                colToSet = col + i;
-            } else {
+            if (ship.getOrientation() == Orientation.VERTICAL) {
                 rowToSet = row + i;
+            } else {
+                colToSet = col + i;
             }
 
-            if (canPlaceShip(rowToSet, colToSet)) {
+            if (isCellOutsideBoundaries(rowToSet, colToSet)) {
                 throw new IllegalPlacementException("Cannot place ship outside the board boundaries");
             }
 
             shipCells[i] = boardGrid[rowToSet][colToSet];
+
+            if (isCellOccupiedOrHasAdjacentShip(shipCells[i])) {
+                throw new IllegalPlacementException(
+                    "Ship placement overlaps existing ships or violates the no-touching rule"
+                );
+            }
         }
 
         for (int i = 0; i < count; i++) {
@@ -84,7 +92,25 @@ public class Board
         }
 
         shipCount++;
+
         shipCountsByDeck[count - 1]++;
+    }
+
+    private boolean isCellOccupiedOrHasAdjacentShip(Cell shipCell)
+    {
+        for (int row = shipCell.getRow() - 1; row <= shipCell.getRow() + 1; row++) {
+            for (int col = shipCell.getRow() - 1; col <= shipCell.getCol() + 1; col++) {
+                if (isCellOutsideBoundaries(row, col)) {
+                    continue;
+                }
+
+                if (boardGrid[row][col].getState() != CellState.EMPTY) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private int getMaxShipTypeCount(int deckCount)
@@ -128,7 +154,7 @@ public class Board
         return boardGrid[row][col];
     }
 
-    private boolean canPlaceShip(int row, int col)
+    private boolean isCellOutsideBoundaries(int row, int col)
     {
         return row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE;
     }
