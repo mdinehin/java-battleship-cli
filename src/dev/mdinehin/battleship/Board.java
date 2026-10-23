@@ -28,13 +28,7 @@ public class Board
         printColumnHeaders();
 
         for (int row = 0; row < BOARD_SIZE; row++) {
-            int rowLabel = row + 1;
-
-            if (rowLabel < BOARD_SIZE) {
-                System.out.print(' ');
-            }
-
-            System.out.print(rowLabel);
+            System.out.print((char) ('A' + row));
 
             for (int col = 0; col < BOARD_SIZE; col++) {
                 char cellValue = boardGrid[row][col].stateToChar();
@@ -129,7 +123,7 @@ public class Board
     private boolean isCellOccupiedOrHasAdjacentShip(Cell shipCell)
     {
         for (int row = shipCell.getRow() - 1; row <= shipCell.getRow() + 1; row++) {
-            for (int col = shipCell.getRow() - 1; col <= shipCell.getCol() + 1; col++) {
+            for (int col = shipCell.getCol() - 1; col <= shipCell.getCol() + 1; col++) {
                 if (isCellOutsideBoundaries(row, col)) {
                     continue;
                 }
@@ -150,10 +144,10 @@ public class Board
 
     private static void printColumnHeaders()
     {
-        System.out.print("  ");
+        System.out.print(" ");
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            System.out.print((char) ('A' + i));
+            System.out.print(i);
         }
 
         System.out.print('\n');
@@ -188,12 +182,16 @@ public class Board
 
         if (cell.getState() == CellState.EMPTY) {
             cell.setState(CellState.MISS);
+            System.out.println("Miss!");
         } else if (cell.getState() == CellState.SHIP) {
             cell.setState(CellState.HIT);
             cell.getShip().registerHit();
 
             if (cell.getShip().isSunk()) {
                 shipCount--;
+                System.out.println("You sunk a ship!");
+            } else {
+                System.out.println("Hit!");
             }
         }
     }

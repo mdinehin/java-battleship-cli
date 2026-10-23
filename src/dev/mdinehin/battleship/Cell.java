@@ -25,11 +25,10 @@ public class Cell
     public char stateToChar()
     {
         return switch (cellState) {
-            case EMPTY -> ' ';
-            case SHIP -> 'S';
+            case EMPTY, SHIP -> ' ';
+            case MISS -> '!';
             case HIT -> 'O';
-            case MISS -> 'X';
-            case SUNK -> 'U';
+            case SUNK -> 'X';
         };
     }
 
