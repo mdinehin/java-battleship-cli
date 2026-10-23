@@ -61,10 +61,6 @@ public class Board
             throw new IllegalPlacementException(errorMessage);
         }
 
-        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
-            throw new IllegalPlacementException("Cannot place ship outside the board boundaries");
-        }
-
         Cell[] shipCells = new Cell[count];
 
         int rowToSet = row, colToSet = col;
@@ -76,8 +72,14 @@ public class Board
                 rowToSet = row + i;
             }
 
-            shipCells[i] = boardGrid[rowToSet][colToSet];
+            if (canPlaceShip(rowToSet, colToSet)) {
+                throw new IllegalPlacementException("Cannot place ship outside the board boundaries");
+            }
 
+            shipCells[i] = boardGrid[rowToSet][colToSet];
+        }
+
+        for (int i = 0; i < count; i++) {
             ship.assignCell(shipCells[i], i);
         }
 
@@ -124,5 +126,10 @@ public class Board
     public Cell getCell(int row, int col)
     {
         return boardGrid[row][col];
+    }
+
+    private boolean canPlaceShip(int row, int col)
+    {
+        return row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE;
     }
 }
