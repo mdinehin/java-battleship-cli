@@ -37,7 +37,7 @@ class BoardTest
         });
 
         assertEquals(
-            "The maximum number of ships of this type has been reached [Deck count: 1]", exception.getMessage()
+            "The maximum number of ships of this type has been reached [deck count: 1]", exception.getMessage()
         );
     }
 
@@ -51,7 +51,7 @@ class BoardTest
         });
 
         assertEquals(
-            "The maximum number of ships of this type has been reached [Deck count: 4]", exception.getMessage()
+            "The maximum number of ships of this type has been reached [deck count: 4]", exception.getMessage()
         );
     }
 
@@ -160,5 +160,13 @@ class BoardTest
         });
 
         assertEquals("Cell has already been fired upon", exception.getMessage());
+    }
+
+    @Test
+    void shouldRandomlyPlaceRequiredShipTypesAndQuantitiesWhenBoardIsPopulated() throws Exception
+    {
+        board.populate();
+
+        assertEquals(10, board.getShipCount());
     }
 }

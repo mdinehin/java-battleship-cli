@@ -1,5 +1,7 @@
 package dev.mdinehin.battleship;
 
+import java.util.Random;
+
 public class Board
 {
     public static final int BOARD_SIZE = 10;
@@ -45,11 +47,39 @@ public class Board
 
     public void populate()
     {
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                boardGrid[row][col].setState(getRandomCellState());
+        Random random = new Random();
+
+        for (int deckCount = 1; deckCount <= SHIP_TYPE_COUNT; deckCount++) {
+            for (int shipCount = 0; shipCount < getMaxShipTypeCount(deckCount); shipCount++) {
+                boolean tryAgain;
+
+                do {
+                    int row = random.nextInt(BOARD_SIZE);
+                    int col = random.nextInt(BOARD_SIZE);
+                    Orientation orientation = random.nextBoolean() ? Orientation.HORIZONTAL : Orientation.VERTICAL;
+
+                    Ship ship = getShip(deckCount, orientation);
+
+                    try {
+                        placeShip(ship, row, col);
+                        tryAgain = false;
+                    } catch (IllegalPlacementException e) {
+                        tryAgain = true;
+                    }
+                } while (tryAgain);
             }
         }
+    }
+
+    private Ship getShip(int deckCount, Orientation orientation)
+    {
+        return switch (deckCount) {
+            case 1 -> new Submarine();
+            case 2 -> new Destroyer(orientation);
+            case 3 -> new Cruiser(orientation);
+            case 4 -> new Battleship(orientation);
+            default -> throw new IllegalArgumentException("Unexpected deck count value: " + deckCount);
+        };
     }
 
     public void placeShip(Ship ship, int row, int col) throws IllegalPlacementException
@@ -58,7 +88,7 @@ public class Board
 
         if (shipCountsByDeck[count - 1] == getMaxShipTypeCount(count)) {
             String errorMessage = String.format(
-                "The maximum number of ships of this type has been reached [Deck count: %d]", count
+                "The maximum number of ships of this type has been reached [deck count: %d]", count
             );
             throw new IllegalPlacementException(errorMessage);
         }
@@ -116,21 +146,6 @@ public class Board
     private int getMaxShipTypeCount(int deckCount)
     {
         return SHIP_TYPE_COUNT - deckCount + 1;
-    }
-
-    private static CellState getRandomCellState()
-    {
-        double random = Math.random();
-
-        if (random < 0.2) {
-            return CellState.HIT;
-        }
-
-        if (random > 0.8) {
-            return CellState.EMPTY;
-        }
-
-        return CellState.MISS;
     }
 
     private static void printColumnHeaders()
