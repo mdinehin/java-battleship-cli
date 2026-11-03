@@ -3,7 +3,7 @@
 ![Java Version](https://img.shields.io/badge/Java-25.x-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Test Coverage](https://img.shields.io/badge/Test_Coverage-100%25-brightgreen?style=flat-square)
 ![GitHub Release](https://img.shields.io/github/v/release/mdinehin/java-battleship-cli?label=Release&style=flat-square&logo=github&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 A lightweight and robust Command-Line Interface (CLI) implementation of the classic Battleship naval strategy game built with Java and driven by Domain-Driven Design (DDD) and Test-Driven Development (TDD) principles.
 
