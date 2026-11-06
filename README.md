@@ -13,9 +13,13 @@ Java Battleship CLI brings the tactical naval warfare experience directly to you
 
 > Note on Game Rules: This implementation defaults to the classic Sea Battle fleet layout, the original Eastern European paper-and-pencil configuration, predating Milton Bradley's 1967 plastic board game that popularized the Western standard.
 
+## Preview
+
+![Application demo walkthrough](https://github.com/user-attachments/assets/4aabaa47-23dc-4b42-876b-61f011a0ef35)
+
 ### Features
 
-- 🚢 Standard Board Setup: Classic 10x10 grid layout (Rows A–J, Columns 0–9).
+- 🚢 Standard Board Setup: Classic 10x10 grid layout (Rows A-J, Columns 0-9).
 - 🎲 Randomized Fleet Generation: Automated and valid placement for full ship fleets without overlaps.
 - 🎯 Smart Parsing: Robust handling of target coordinates (e.g., `A0`, `J9`).
 - 📊 Detailed Domain Messaging: Informative exception tracking and clean validation feedback.
@@ -41,7 +45,7 @@ The following software dependencies are required:
 
 - [Java Standard Edition](https://www.oracle.com/java/technologies/downloads/) version 25 or higher
 
-## Installation & Running
+## Installation and Running
 
 If you just want to play the game without compiling the source code:
 
